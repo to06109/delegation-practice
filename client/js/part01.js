@@ -26,6 +26,7 @@ const data = [
 // 이벤트 객체에서 타겟을 찾는다.
 
 const navigation = getNode('.navigation')
+const visualImg = getNode('.visual img')
 
 function makeArray(arrayLike) {
   return Array.from(arrayLike)
@@ -33,16 +34,30 @@ function makeArray(arrayLike) {
 
 function handler(e) {
   let target = e.target.closest('li')
+  // target이 null이면 함수 종료
+  if (!target) return
+
   let list = makeArray(navigation.children)
+  let index = attr(target, 'data-index')
   // console.log('test', list[0])
 
   // 내가 선택하지 않은(모든 li)li에게 is-active 클래스를 제거함
   // forEach 배열에만 쓸 수 있음 -> 배열로 만들기
   // [...list] / Array.prototype.slice.call(list)
+
+  // [li li li li]
   list.forEach((item) => removeClass(item, 'is-active'))
 
-  // target이 null이면 함수 종료
-  if (!target) return
+  // 타겟의 index 뽑아내기
+  // console.log(target.dataset.index) // 이렇게도 됨
+  console.log(index)
+  // attr(visualImg, 'src', `./assets/part01/${data[index-1].src}`)
+  attr(visualImg, 'src', `./assets/part01/visual${index}.jpg`)
+  attr(visualImg, 'alt', data[index - 1].alt)
+
+  // 내가 한 코드
+  // visualImg.src = `./assets/part01/visual${index}.jpg`
+  // visualImg.alt = e.target.alt
 
   // 선택한 li에게 is-active를 넣어줌
   addClass(target, 'is-active')
